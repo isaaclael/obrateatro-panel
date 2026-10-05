@@ -655,6 +655,46 @@ st.set_page_config(
     layout="wide",
 )
 
+
+# ============================================================
+# AUTENTICACIÓN CON CONTRASEÑA
+# ============================================================
+def check_password():
+    """Devuelve True si el usuario ingresó la contraseña correcta."""
+    def password_entered():
+        try:
+            password_correcta = st.secrets.get("APP_PASSWORD", "")
+        except Exception:
+            password_correcta = ""
+        if st.session_state.get("password", "") == password_correcta:
+            st.session_state["password_correct"] = True
+            del st.session_state["password"]
+        else:
+            st.session_state["password_correct"] = False
+
+    if st.session_state.get("password_correct", False):
+        return True
+
+    st.markdown("## 🔒 Acceso restringido")
+    st.caption(
+        f"Panel interno del Taller de Teatro · {OBRA_TITULO}  \n"
+        "Solo integrantes del grupo. Ingresa la contraseña para continuar."
+    )
+    st.text_input(
+        "Contraseña",
+        type="password",
+        on_change=password_entered,
+        key="password",
+    )
+    if "password_correct" in st.session_state and not st.session_state["password_correct"]:
+        st.error("😕 Contraseña incorrecta. Intenta de nuevo.")
+    return False
+
+
+if not check_password():
+    st.stop()
+
+
 cfg = cargar_config()
 df = cargar_ventas()
 recalcular_next_folio(df, cfg)
