@@ -1,0 +1,7 @@
+streamlit>=1.30.0
+pandas
+fpdf2
+qrcode[pil]
+opencv-python-headless
+pyzbar
+openpyxl

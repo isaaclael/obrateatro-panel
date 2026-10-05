@@ -1,0 +1,13 @@
+# Datos locales (no subir a GitHub)
+datos/
+*.csv
+*.bak
+
+# Secretos (NUNCA subir)
+.streamlit/secrets.toml
+
+# Entornos virtuales
+venv/
+env/
+__pycache__/
+*.pyc
